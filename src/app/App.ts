@@ -1,3 +1,5 @@
+import { RegistrationPage } from "../pages/RegistrationPage";
+
 export class App {
   private root: HTMLElement;
 
@@ -14,6 +16,8 @@ export class App {
   }
 
   private init(): void {
-    this.root.textContent = "Not Fight Club";
+    const page = new RegistrationPage();
+
+    this.root.append(page.render());
   }
 }
