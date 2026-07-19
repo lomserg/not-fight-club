@@ -21,16 +21,50 @@ export class App {
 
     this.init();
   }
+
+  private openSettings(player: Player): void {
+    this.router.navigate(
+      new SettingsPage(
+        player,
+        (name: string) => {
+          player.name = name;
+
+          LocalStorageService.savePlayer(player);
+
+          this.openHome(player);
+        },
+        () => {
+          this.openHome(player);
+        },
+      ),
+    );
+  }
+  private openBattle(player: Player): void {
+    this.router.navigate(
+      new BattlePage(player, () => {
+        this.openHome(player);
+      }),
+    );
+  }
+
   private openHome(player: Player): void {
     this.router.navigate(
       new HomePage(
         player,
-        () => this.router.navigate(new BattlePage()),
-        () => this.router.navigate(new CharacterPage()),
-        () => this.router.navigate(new SettingsPage()),
+        () => this.openBattle(player),
+        () => this.openCharacter(player),
+        () => this.openSettings(player),
       ),
     );
   }
+  private openCharacter(player: Player): void {
+    this.router.navigate(
+      new CharacterPage(player, () => {
+        this.openHome(player);
+      }),
+    );
+  }
+
   private init(): void {
     const player = LocalStorageService.getPlayer();
     if (player) {
