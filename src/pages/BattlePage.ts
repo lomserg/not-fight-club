@@ -131,7 +131,7 @@ export class BattlePage extends BasePage {
     this.battleLog.setText(
       `You dealt ${playerDamage}. Enemy dealt ${enemyDamage}.`,
     );
-    if (this.enemyHp === 0) {
+    if (this.enemyHp <= 0) {
       this.player.wins++;
 
       LocalStorageService.savePlayer(this.player);
@@ -139,9 +139,10 @@ export class BattlePage extends BasePage {
       alert("You win!");
 
       this.onBack();
+      return;
     }
 
-    if (this.playerHp === 0) {
+    if (this.playerHp <= 0) {
       this.player.losses++;
 
       LocalStorageService.savePlayer(this.player);
@@ -149,6 +150,7 @@ export class BattlePage extends BasePage {
       alert("You lose!");
 
       this.onBack();
+      return;
     }
   }
 
