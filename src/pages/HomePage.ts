@@ -51,16 +51,7 @@ export class HomePage extends BasePage {
       this.onSettings();
     });
   }
-  private openHome(player: Player): void {
-    this.router.navigate(
-      new HomePage(
-        player,
-        () => this.router.navigate(new BattlePage()),
-        () => this.router.navigate(new CharacterPage()),
-        () => this.router.navigate(new SettingsPage()),
-      ),
-    );
-  }
+
   render(): HTMLElement {
     this.clear();
 
