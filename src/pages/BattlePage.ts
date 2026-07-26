@@ -29,16 +29,45 @@ export class BattlePage extends BasePage {
 
   private readonly enemyImage = new BaseComponent("img");
 
-  private readonly playerHpText = new BaseComponent("p");
+  private readonly playerHpText = new BaseComponent("p", ["battle__hp"]);
+  private readonly enemyHpText = new BaseComponent("p", ["battle__hp"]);
+  private readonly playerHpBar = new BaseComponent("div", ["hp-bar"]);
 
-  private readonly enemyHpText = new BaseComponent("p");
+  private readonly enemyHpBar = new BaseComponent("div", ["hp-bar"]);
 
+  private readonly playerHpFill = new BaseComponent("div", ["hp-fill"]);
+
+  private readonly enemyHpFill = new BaseComponent("div", ["hp-fill"]);
   private readonly attackButton = new Button("Attack");
+  private readonly logs: string[] = [];
+  private readonly battleLog = new BaseComponent("div", ["battle__log"]);
 
-  private readonly battleLog = new BaseComponent("div");
+  private readonly attackContainer = new BaseComponent("div", [
+    "battle__zones",
+  ]);
+  private readonly defenseContainer = new BaseComponent("div", [
+    "battle__zones",
+  ]);
 
-  private readonly attackContainer = new BaseComponent("div");
-  private readonly defenseContainer = new BaseComponent("div");
+  private readonly fighters = new BaseComponent("div", ["battle__fighters"]);
+
+  private readonly controls = new BaseComponent("div", ["battle__controls"]);
+
+  private readonly playerCard = new BaseComponent("div", ["battle__card"]);
+
+  private readonly enemyCard = new BaseComponent("div", ["battle__card"]);
+
+  private readonly bottom = new BaseComponent("div", ["battle__bottom"]);
+
+  private readonly logWrapper = new BaseComponent("div", [
+    "battle__log-wrapper",
+  ]);
+
+  private readonly logTitle = new BaseComponent(
+    "h3",
+    ["battle__log-title"],
+    "Battle Log",
+  );
   constructor(player: Player, onBack: () => void) {
     super();
 
@@ -62,6 +91,8 @@ export class BattlePage extends BasePage {
 
       this.defenseContainer.append(this.createDefenseCheckbox(zone));
     });
+    this.playerHpBar.append(this.playerHpFill);
+    this.enemyHpBar.append(this.enemyHpFill);
   }
   private createAttackRadio(zone: Zone): BaseComponent<"label"> {
     const label = new BaseComponent("label");
@@ -89,6 +120,9 @@ export class BattlePage extends BasePage {
     const enemyAttack = BattleEngine.randomZones(1);
     const enemyDefense = BattleEngine.randomZones(2);
 
+    const playerTarget = this.selectedAttack;
+    const enemyTarget = enemyAttack[0];
+
     const playerDamage = BattleEngine.calculateDamage(
       [this.selectedAttack],
       enemyDefense,
@@ -107,6 +141,15 @@ export class BattlePage extends BasePage {
     this.playerHpText.setText(`HP: ${this.playerHp}`);
     this.enemyHpText.setText(`HP: ${this.enemyHp}`);
 
+    this.playerHpFill.node.style.width = `${this.playerHp}%`;
+    this.enemyHpFill.node.style.width = `${this.enemyHp}%`;
+    this.updateBattleLog(
+      `🗡️ You attacked ${this.enemy.name}'s ${playerTarget} for ${playerDamage} HP`,
+    );
+
+    this.updateBattleLog(
+      `⚔️ ${this.enemy.name} attacked your ${enemyTarget} for ${enemyDamage} HP`,
+    );
     this.selectedAttack = null;
     this.selectedDefense = [];
 
@@ -153,6 +196,13 @@ export class BattlePage extends BasePage {
       return;
     }
   }
+  private updateBattleLog(message: string): void {
+    this.logs.unshift(message);
+
+    this.battleLog.node.innerHTML = this.logs
+      .map((log) => `<div>${log}</div>`)
+      .join("");
+  }
 
   private createDefenseCheckbox(zone: Zone): BaseComponent<"label"> {
     const label = new BaseComponent("label");
@@ -193,25 +243,37 @@ export class BattlePage extends BasePage {
     this.playerHpText.setText(`HP: ${this.playerHp}`);
     this.enemyHpText.setText(`HP: ${this.enemyHp}`);
 
-    this.append(
-      this.title,
+    this.playerCard.clear();
+    this.enemyCard.clear();
+    this.fighters.clear();
+    this.controls.clear();
 
+    this.playerCard.append(
       this.playerImage,
-      this.enemyImage,
-
+      this.playerHpBar,
       this.playerHpText,
-      this.enemyHpText,
+    );
 
+    this.enemyCard.append(this.enemyImage, this.enemyHpBar, this.enemyHpText);
+
+    this.fighters.append(this.playerCard, this.enemyCard);
+
+    this.controls.append(
       this.attackTitle,
       this.attackContainer,
-
       this.defenseTitle,
       this.defenseContainer,
-
       this.attackButton,
-      this.battleLog,
-      this.backButton,
     );
+
+    this.bottom.clear();
+    this.logWrapper.clear();
+
+    this.logWrapper.append(this.logTitle, this.battleLog);
+
+    this.bottom.append(this.controls, this.logWrapper);
+
+    this.append(this.title, this.fighters, this.bottom, this.backButton);
 
     return this.node;
   }

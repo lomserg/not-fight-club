@@ -1,0 +1,118 @@
+.battle__fighters {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 30px 0;
+}
+
+.hp {
+  width: 220px;
+  height: 18px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.battle-log {
+  margin-top: 30px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-height: 120px;
+  background: #fafafa;
+}
+h1 {
+  text-align: center;
+}
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.battle__card {
+  flex: 1;
+  text-align: center;
+}
+
+.battle__card img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+}
+
+.battle__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.page__button {
+  padding: 10px 24px;
+}
+.battle__card p {
+  font-weight: bold;
+  color: #2e7d32;
+  margin-top: 10px;
+}
+.battle__hp {
+  color: #2e7d32;
+  font-size: 22px;
+  font-weight: bold;
+}
+.battle__card {
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.battle__zones {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+.battle__log div {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+.hp-bar {
+  width: 220px;
+  height: 18px;
+  margin: 12px auto;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  width: 100%;
+  background: #4caf50;
+  transition: 0.3s;
+}
+.battle__bottom {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  margin-top: 40px;
+}
+
+.battle__controls {
+  flex: 1;
+}
+
+.battle__log {
+  width: 340px;
+  min-height: 320px;
+  max-height: 320px;
+  overflow-y: auto;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+  padding: 15px;
+}
